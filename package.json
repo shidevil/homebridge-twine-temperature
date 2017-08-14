@@ -1,0 +1,25 @@
+{
+  "name": "homebridge-twine-temperature",
+  "version": "1.0.0",
+  "description": "Twine plugin for homebridge",
+  "license": "ISC",
+  "keywords": [
+    "homebridge-plugin",
+    "twine",
+    "temperature sensor"
+  ],
+  "engines": {
+    "node": ">=0.12.0",
+    "homebridge": ">=0.2.0"
+  },
+  "author": {
+    "name": "@shidevil"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/shidevil/homebridge-twine-temperature.git"
+  },
+  "dependencies": {
+    "request": "^2.5.0"
+  }
+}
