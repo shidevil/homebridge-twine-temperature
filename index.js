@@ -47,7 +47,6 @@ HttpTemperature.prototype = {
                var temperature = value.values[1][1].toString();       
                temperaturesub = temperature.substr(0, temperature.length-2);
                value = (temperaturesub - 32) * (5/9);
-               console.log("temperature: " + temperature);
                if (value < this.minTemperature || value > this.maxTemperature || isNaN(value)) {
                   throw new Error("Invalid value received");
                }
