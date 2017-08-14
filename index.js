@@ -8,7 +8,7 @@ const DEF_MIN_TEMPERATURE = -100,
 module.exports = function (homebridge) {
    Service = homebridge.hap.Service;
    Characteristic = homebridge.hap.Characteristic;
-   homebridge.registerAccessory("homebridge-twine-temperature", "TwineTemperature", TwineTemperature);
+   homebridge.registerAccessory("homebridge-twine-temperature", "TwineTemperature", HttpTemperature);
 }
 
 
