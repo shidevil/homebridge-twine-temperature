@@ -1,0 +1,19 @@
+{
+    "bridge": {
+        "name": "Homebridge",
+        "username": "CC:22:3D:E3:CE:34",
+        "port": 51826,
+        "pin": "031-45-154"
+    },
+
+    "platforms": [],
+
+    "accessories": [
+        {
+            "accessory": "TwineTemperature",
+            "name": "Twine Temperature",
+            "url": "https://twine.cc/<Twine Device ID>/rt?cached=1&access_key=<access key>",
+            "http_method": "GET"
+        }
+    ]
+}
