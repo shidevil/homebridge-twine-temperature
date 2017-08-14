@@ -4,6 +4,12 @@ Based on Metbosch homebridge-HTTP-Temperature https://github.com/metbosch/homebr
 
 Support getting temperature from Twine API returning a JSON with the temperature data
 
+# Installation
+
+1. Download/Clone the Git
+2. cd to the git folder
+3. Run sudo npm -g install
+
 # Configuration
 
 The available fields in the config.json file are:
