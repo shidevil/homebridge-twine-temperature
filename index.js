@@ -27,6 +27,8 @@ function TwineTemperature(log, config) {
    this.minTemperature = config["min_temp"] || DEF_MIN_TEMPERATURE;
    this.maxTemperature = config["max_temp"] || DEF_MAX_TEMPERATURE;
    this.refresh = config['refresh'] || 300;//5 minutes polling
+      
+   setInterval(this.polling.bind(this), this.refresh * 1000);
 }
 
 TwineTemperature.prototype = {
@@ -59,7 +61,6 @@ TwineTemperature.prototype = {
          }
          callback(error, value);
       });
-         setInterval(this.polling.bind(this), this.refresh * 1000);
    },
       
    polling: function(){
