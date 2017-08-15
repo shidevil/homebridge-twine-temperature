@@ -22,6 +22,7 @@ The available fields in the config.json file are:
  - `timeout` [Optional] Waiting time for the endpoint response before fail (Default: 5000ms).
  - `min_temp` [Optional] Min. temperature that can be returned by the endpoint (Default: -100).
  - `max_temp` [Optional] Max. temperature that can be returned by the endpoint (Default: 100).
+ - `refresh` [Optional] Refresh Status timing. Default 5 minutes (Default: 300). 
 
 Example:
 
