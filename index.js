@@ -8,11 +8,11 @@ const DEF_MIN_TEMPERATURE = -100,
 module.exports = function (homebridge) {
    Service = homebridge.hap.Service;
    Characteristic = homebridge.hap.Characteristic;
-   homebridge.registerAccessory("homebridge-twine-temperature", "TwineTemperature", HttpTemperature);
+   homebridge.registerAccessory("homebridge-twine-temperature", "TwineTemperature", TwineTemperature);
 }
 
 
-function HttpTemperature(log, config) {
+function TwineTemperature(log, config) {
    this.log = log;
 
    // url info
@@ -28,7 +28,7 @@ function HttpTemperature(log, config) {
    this.maxTemperature = config["max_temp"] || DEF_MAX_TEMPERATURE;
 }
 
-HttpTemperature.prototype = {
+TwineTemperature.prototype = {
 
    getState: function (callback) {
       var ops = {
