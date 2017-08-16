@@ -64,7 +64,7 @@ TwineTemperature.prototype = {
    },
       
    polling: function(){
-      console.log("Polling Tempearture");
+      this.log("Polling Tempearture");
       this.temperatureService
          .getCharacteristic(Characteristic.CurrentTemperature).getValue();
    },
