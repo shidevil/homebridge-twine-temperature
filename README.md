@@ -1,5 +1,3 @@
-Based on Metbosch homebridge-HTTP-Temperature https://github.com/metbosch/homebridge-http-temperature
-
 # homebridge-twine-temperature
 
 Support getting temperature from Twine API returning a JSON with the temperature data
@@ -37,3 +35,7 @@ Example:
     ]
 
 ```
+
+# Credit
+
+Based on Metbosch homebridge-HTTP-Temperature https://github.com/metbosch/homebridge-http-temperature
