@@ -26,7 +26,7 @@ function TwineTemperature(log, config) {
    this.timeout = config["timeout"] || DEF_TIMEOUT;
    this.minTemperature = config["min_temp"] || DEF_MIN_TEMPERATURE;
    this.maxTemperature = config["max_temp"] || DEF_MAX_TEMPERATURE;
-   this.refresh = config['refresh'] || 300;//5 minutes polling
+   this.refresh = config["refresh"] || 300;//5 minutes polling
       
    setInterval(this.polling.bind(this), this.refresh * 1000);
 }
@@ -64,9 +64,11 @@ TwineTemperature.prototype = {
    },
       
    polling: function(){
+      if(this.refresh !== 0){
       this.log("Polling Tempearture");
       this.temperatureService
          .getCharacteristic(Characteristic.CurrentTemperature).getValue();
+         }
    },
 
    getServices: function () {
