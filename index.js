@@ -29,12 +29,14 @@ function TwineTemperature(log, config) {
    this.maxTemperature = config["max_temp"] || DEF_MAX_TEMPERATURE;
    this.update_interval = Number ( config["update_interval"] || DEF_INTERVAL);
       
-   setInterval(this.polling.bind(this), this.refresh * 1000);
+   this.last_value = null;
+   this.waiting_response = false;
 }
 
 TwineTemperature.prototype = {
 
       updateState: function() {
+         //Ensure previous call finished
       if (this.waiting_response) {
          this.log('avoid updatestate as previous response does not arrived yet');
          return;
@@ -83,17 +85,19 @@ TwineTemperature.prototype = {
 
    getState: function (callback) {
       this.log('call to getstate: waiting_response is "' + this.waiting_response + '"');
-      this.updateState();
+      this.updateState(); //This sets the promise in last_value
       this.last_value.then((value) => {
          callback(null, value);
          return value;
       }, (error) => {
          callback(error, null);
+         //For now, only to avoid the NodeJS warning about uncatched rejected promises
          return error;
       })
    },
 
    getTemperatureUnits: function(callback) {
+      // 1 =F and 0 = C
       var value = 0;
       this.log("call to getTemperature'Units, response: " + value);
       callback(null, value);
