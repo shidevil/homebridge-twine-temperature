@@ -4,6 +4,7 @@ var request = require('request');
 const DEF_MIN_TEMPERATURE = -100,
       DEF_MAX_TEMPERATURE = 100,
       DEF_TIMEOUT = 5000;
+      DEF_INTERVAL = 300000; //120second
 
 module.exports = function (homebridge) {
    Service = homebridge.hap.Service;
@@ -26,20 +27,25 @@ function TwineTemperature(log, config) {
    this.timeout = config["timeout"] || DEF_TIMEOUT;
    this.minTemperature = config["min_temp"] || DEF_MIN_TEMPERATURE;
    this.maxTemperature = config["max_temp"] || DEF_MAX_TEMPERATURE;
-   this.refresh = config["refresh"] || 300;//5 minutes polling
+   this.update_interval = Number ( config["update_interval"] || DEF_INTERVAL);
       
    setInterval(this.polling.bind(this), this.refresh * 1000);
 }
 
 TwineTemperature.prototype = {
 
-   getState: function (callback) {
-      var ops = {
+      updateState: function() {
+      if (this.waiting_response) {
+         this.log('avoid updatestate as previous response does not arrived yet');
+         return;
+      }
+      this.last_value = new Promise((resolve, reject) => {
+         var ops = {
          uri:    this.url,
          method: this.http_method,
          timeout: this.timeout
       };
-      this.log('Requesting temperature on "' + ops.uri + '", method ' + ops.method);
+       this.log('Requesting temperature on "' + ops.uri + '", method ' + ops.method);
       request(ops, (error, res, body) => {
          var value = null;
          if (error) {
@@ -59,17 +65,39 @@ TwineTemperature.prototype = {
                error = parseErr;
             }
          }
-         callback(error, value);
-      });
-   },
-      
-   polling: function(){
-      if(this.refresh !== 0){
-      this.log("Polling Tempearture");
-      this.temperatureService
-         .getCharacteristic(Characteristic.CurrentTemperature).getValue();
+         if (!error) {
+            resolve(value);
+         } else {
+            reject(error);
          }
+         this.waiting_response = false;
+      });
+}).then((value) => {
+   this.temperatureService
+      .getCharacteristic(Characteristic.CurrentTemperature).updateValue(value, null);
+      return value;
+}, (error) => {
+   return error;
+});
    },
+
+   getState: function (callback) {
+      this.log('call to getstate: waiting_response is "' + this.waiting_response + '"');
+      this.updateState();
+      this.last_value.then((value) => {
+         callback(null, value);
+         return value;
+      }, (error) => {
+         callback(error, null);
+         return error;
+      })
+   },
+
+   getTemperatureUnits: function(callback) {
+      var value = 0;
+      this.log("call to getTemperature'Units, response: " + value);
+      callback(null, value);
+   }
 
    getServices: function () {
       this.informationService = new Service.AccessoryInformation();
@@ -86,6 +114,9 @@ TwineTemperature.prototype = {
              minValue: this.minTemperature,
              maxValue: this.maxTemperature
          });
+   if (this.update_interval > 0) {
+         this.timer = setInterval(this.updateState.bind(this), this.update_interval);
+      }
       return [this.informationService, this.temperatureService];
    }
 };
