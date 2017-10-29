@@ -58,13 +58,9 @@ TwineTemperature.prototype = {
                var temperature = value.values[1][1].toString();       
                temperaturesub = temperature.substr(0, temperature.length-2);
                value = (temperaturesub - 32) * (5/9);
-             if (isNaN(value)) {
-                     throw new Error('Received value is not a number: "' + value + '" ("' + body.substring(0, 100) + '")');
-                  } else if (value < this.minTemperature || value > this.maxTemperature) {
-                     var msg = 'Received value is out of bounds: "' + value + '". min=' + this.minTemperature +
-                               ', max= ' + this.maxTemperature;
-                     throw new Error(msg);
-                  }
+               if (value < this.minTemperature || value > this.maxTemperature || isNaN(value)) {
+                  throw new Error("Invalid value received");
+              }
                this.log('HTTP successful response: ' + value);
             } catch (parseErr) {
                this.log('Error processing received information: ' + parseErr.message);
